@@ -19,7 +19,7 @@ type RedisClient struct {
 	Conn *redis.Conn
 }
 
-func connect()(Conn, error){
+func connect()(redis.Conn, error){
 	redis_host := os.Getenv("REDIS_HOST")
     redis_port := os.Getenv("REDIS_PORT")
 
