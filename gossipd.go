@@ -7,14 +7,14 @@ import (
 	"net"
 	"os"
 	"runtime/debug"
-	"github.com/luanjunyi/gossipd/mqtt"
+	"github.com/devdavidkarlsson/gossipd/mqtt"
 )
 
 type CmdFunc func(mqtt *mqtt.Mqtt, conn *net.Conn, client **mqtt.ClientRep)
 
 var g_debug = flag.Bool("d", false, "enable debugging log")
-var g_port = flag.Int("p", 1883, "port of the broker to listen")
-var g_redis_port = flag.Int("r", 6379, "port of the broker to listen")
+// var g_port = flag.Int("p", 1883, "port of the broker to listen")
+// var g_redis_port = flag.Int("r", 6379, "port of the broker to listen")
 
 var g_cmd_route = map[uint8]CmdFunc {
 	mqtt.CONNECT: mqtt.HandleConnect,
@@ -106,11 +106,13 @@ func main() {
 
 	setup_logging()
 
+	mqtt_port := os.Getenv("MQTT_PORT")
+
 	mqtt.RecoverFromRedis()
 
-	log.Debugf("Gossipd kicking off, listening localhost:%d", *g_port)
+	log.Debugf("Gossipd kicking off, listening localhost:%d", mqtt_port)
 
-	link, _ := net.Listen("tcp", fmt.Sprintf(":%d", *g_port))
+	link, _ := net.Listen("tcp", fmt.Sprintf(":%d", mqtt_port))
 
 	for {
 		conn, err := link.Accept()

@@ -7,17 +7,21 @@ The main reason I'm writting this is because all major open source MQTT brokers,
 Gossipd should be considered when the 'select' based Mosquitto can't meet your scale requirement, yet only the 'basic' part(see [Not supported features](#unsupported) for detail) of MQTT is needed in your project. Gossipd is built with profermance at heart.
 
 #Usage#
-Super simple. Just run 
+Super simple. Just run docker container.
 
->go run gossipd 
+Set environment variables for redis and MQTT in docker container:
 
-The broker will start and listen on port 1883 for MQTT traffic. Command line flags:
+REDIS_HOST
+REDIS_PORT
 
-* -p PORT: specify MQTT broker's port, default is 1883
-* -r PORT: specify Redis's port, default is 6379
+MQTT_PORT
+
+
+The broker will start and listen on port defined for MQTT traffic. Command line flags:
+
 * -d: when set comprehensive debugging info will be printed, this may significantly harm performance.
 
-#Dependency#
+#Dependency (included in docker build)#
 * [Redis](http://redis.io) for storage
 * [Redigo](https://github.com/garyburd/redigo) as Redis binding for golang.
 * [Seelog](https://github.com/cihub/seelog) for logging

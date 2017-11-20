@@ -18,12 +18,19 @@ type RedisClient struct {
 	Conn *redis.Conn
 }
 
+func connect(){
+	redis_host := os.Getenv("REDIS_HOST")
+    redis_port := os.Getenv("REDIS_PORT")
+
+	return redis.Dial("tcp", redis_host + ":" + redis_port) 
+} 
+
 
 func StartRedisClient() *RedisClient {
-	conn, err := redis.Dial("tcp", ":6379")
+	conn, err := connect()
 
 	if err != nil {
-		panic("Failed to connect to Redis at port 6379")
+		panic( err)
 	} else {
 		log.Info("Redis client started")
 	}
@@ -48,9 +55,9 @@ func ping_pong_redis(client *RedisClient, interval int) {
 func (client* RedisClient) Reconnect() {
 	log.Debugf("aqquiring g_redis_lock")
 
-	conn, err := redis.Dial("tcp", ":6379")
+	conn, err := connect()
 	if err != nil {
-		panic("Failed to connect to Redis at port 6379")
+		panic(err)
 	} else {
 		log.Info("Redis client reconncted")
 	}
