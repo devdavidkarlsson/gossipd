@@ -10,6 +10,7 @@ import (
 	"sync"
 	"fmt"
 	"time"
+	"os"
 )
 
 var g_redis_lock *sync.Mutex = new(sync.Mutex)
@@ -18,7 +19,7 @@ type RedisClient struct {
 	Conn *redis.Conn
 }
 
-func connect(){
+func connect()(Conn, error){
 	redis_host := os.Getenv("REDIS_HOST")
     redis_port := os.Getenv("REDIS_PORT")
 
